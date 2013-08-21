@@ -1,0 +1,63 @@
+import java.io.*;
+
+class Main
+{
+	public static void main(String args[])throws Exception
+	{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		String units[]={"","ONE ","TWO ","THREE ","FOUR ","FIVE ","SIX ","SEVEN ","EIGHT ","NINE "};
+		String teen[]={"TEN ","ELEVEN ","TWELVE ","THIRTEEN ","FOURTEEN ","FIFTEEN ","SIXTEEN ","SEVENTEEN ","EIGHTEEN ","NINTEEN "};
+		String twin1[]={"","","TWENTY ","THIRTY ","FORTY ","FIFTY ","SIXTY ","SEVENTY ","EIGHTY ","NINTY "};
+		String denom[]={"","HUNDRED ","THOUSAND ","LAKH ","CRORE ","ARAB","KHARAB","NEEL"};
+		String s="";
+		String num=br.readLine();
+		int len=num.length();
+		
+		int block=1,begin=3;
+		
+		if(len>=begin && num.charAt(len-begin)!='0')
+		{
+			s+=units[num.charAt(len-begin)-48]+denom[block];
+		}
+		if(len>1)
+		{
+			if(num.charAt(len-2)=='1')
+				s+=teen[num.charAt(len-1)-48];
+			else
+				s+=twin1[num.charAt(len-2)-48]+units[num.charAt(len-1)-48];
+		}
+		else
+			s+=units[num.charAt(0)-48];
+		
+		if(len>3)
+		{
+			num=num.substring(0,len-3);
+			len-=3;
+		}
+		else
+			len=0;
+		block=2;
+		while(len>0)
+		{
+			if(len>1)
+			{
+				if(num.charAt(len-2)=='1')
+					s=teen[num.charAt(len-1)-48]+denom[block]+s;
+				else if(num.charAt(len-2)!='0' || num.charAt(len-1)!='0')
+					s=twin1[num.charAt(len-2)-48]+units[num.charAt(len-1)-48]+denom[block]+s;
+			}
+			else if(num.charAt(0)!='0')
+				s=units[num.charAt(0)-48]+denom[block]+s;
+			if(len>1)
+			{
+				num=num.substring(0,len-2);
+				len-=2;
+			}
+			else
+				len=0;
+			block++;
+		}
+		if(s.equals(""))s="ZERO";
+		System.out.println(s);
+	}
+};
